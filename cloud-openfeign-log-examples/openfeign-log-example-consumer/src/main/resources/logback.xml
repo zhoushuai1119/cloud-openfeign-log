@@ -21,12 +21,14 @@ debug:当此属性设置为true时，将打印出logback内部日志信息，实
     <property name="log.max.size" value="100MB"/>
     <!-- 日志输出格式 -->
     <property name="log.pattern"
-              value="%d{yyyy-MM-dd HH:mm:ss} | [%thread] | %-5level | %logger{50}.%method:%L - %msg %n"/>
+              value="%d{yyyy-MM-dd HH:mm:ss} 【%tid】 | [%thread] | %-5level | %logger{50}.%method:%L - %msg %n"/>
 
     <!--控制台输出 -->
     <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <Pattern>${log.pattern}</Pattern>
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="org.apache.skywalking.apm.toolkit.log.logback.v1.x.TraceIdPatternLogbackLayout">
+                <Pattern>${log.pattern}</Pattern>
+            </layout>
             <charset>UTF-8</charset>
         </encoder>
     </appender>
@@ -46,8 +48,10 @@ debug:当此属性设置为true时，将打印出logback内部日志信息，实
             <maxHistory>${log.max.history}</maxHistory>
         </rollingPolicy>
         <!-- 日志输出的文件的格式 -->
-        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <Pattern>${log.pattern}</Pattern>
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="org.apache.skywalking.apm.toolkit.log.logback.v1.x.TraceIdPatternLogbackLayout">
+                <Pattern>${log.pattern}</Pattern>
+            </layout>
             <charset>UTF-8</charset>
         </encoder>
     </appender>
@@ -73,8 +77,20 @@ debug:当此属性设置为true时，将打印出logback内部日志信息，实
             <onMismatch>DENY</onMismatch>
         </filter>
         <!-- 日志输出的文件的格式 -->
-        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <Pattern>${log.pattern}</Pattern>
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="org.apache.skywalking.apm.toolkit.log.logback.v1.x.TraceIdPatternLogbackLayout">
+                <Pattern>${log.pattern}</Pattern>
+            </layout>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- skywalking grpc 日志收集 8.4.0版本开始支持 -->
+    <appender name="grpc-log" class="org.apache.skywalking.apm.toolkit.log.logback.v1.x.log.GRPCLogClientAppender">
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="org.apache.skywalking.apm.toolkit.log.logback.v1.x.TraceIdPatternLogbackLayout">
+                <Pattern>${log.pattern}</Pattern>
+            </layout>
             <charset>UTF-8</charset>
         </encoder>
     </appender>
@@ -85,6 +101,7 @@ debug:当此属性设置为true时，将打印出logback内部日志信息，实
         <appender-ref ref="stdout" />
         <appender-ref ref="file.all" />
         <appender-ref ref="file.error" />
+        <appender-ref ref="grpc-log" />
     </root>
 
 </configuration>
