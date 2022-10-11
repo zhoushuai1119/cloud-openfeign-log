@@ -1,14 +1,14 @@
 package com.cloud.openfeign.log;
 
-import ch.qos.logback.core.util.FileUtil;
+import cn.hutool.core.io.IoUtil;
+import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.json.JSONUtil;
 import feign.Logger;
 import feign.Request;
 import feign.Response;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
 
-import java.io.*;
+import java.io.IOException;
 import java.util.*;
 
 import static feign.Util.decodeOrDefault;
@@ -48,7 +48,7 @@ public class MyFeignLogger extends Logger {
             headers.append(next.getKey())
                     .append(":")
                     .append(values.size() == 1 ? values.get(0) : JSONUtil.toJsonStr(values))
-                    .append(iterator.hasNext() ? "|" : "");
+                    .append(iterator.hasNext() ? " | " : "");
         }
         return headers.toString();
     }
@@ -62,10 +62,6 @@ public class MyFeignLogger extends Logger {
         map.put(METHOD, request.httpMethod().name());
         map.put(HEADER, builderHeaders(request.headers()));
         String body = request.body() == null ? null : request.charset() == null ? null : new String(request.body(), request.charset());
-        //文件上传不打印请求日志
-        if (StringUtils.contains(request.url(), "/helper/common/file/upload")) {
-            body = null;
-        }
         map.put(REQUEST_BODY, body);
         logContext.set(map);
     }
@@ -74,13 +70,12 @@ public class MyFeignLogger extends Logger {
      * 响应拦截
      */
     @Override
-    protected Response logAndRebufferResponse(
-            String configKey, Level logLevel, Response response, long elapsedTime) throws IOException {
+    protected Response logAndRebufferResponse(String configKey, Level logLevel, Response response, long elapsedTime) throws IOException {
         Map<String, String> request = logContext.get();
         logContext.remove();
         // 返回参数
-        byte[] bodyData = streamToByteArray(response.body().asInputStream());
-        if (null != bodyData && bodyData.length > 0) {
+        byte[] bodyData = IoUtil.readBytes(response.body().asInputStream());
+        if (ArrayUtil.isNotEmpty(bodyData)) {
             String responseBody = decodeOrDefault(bodyData, UTF_8, "Binary data");
             log(request, response.status(), responseBody.replaceAll("\\s*|\t|\r|\n", ""));
             return response.toBuilder().body(bodyData).build();
@@ -112,13 +107,13 @@ public class MyFeignLogger extends Logger {
      */
     private void log(Map<String, String> request, Integer responseStatus, String responseBody) {
         log.info("\n<Feign>" +
-                        "\npath     -> {}" +
-                        "\ntime     -> {}" +
-                        "\nmethod   -> {}" +
-                        "\nstatus   -> {}" +
-                        "\nheaders  -> {}" +
-                        "\nrequestBody  -> {}" +
-                        "\nresponse -> {}",
+                        "\npath              -> {}" +
+                        "\nelapsedTime       -> {}" +
+                        "\nmethod            -> {}" +
+                        "\nstatus            -> {}" +
+                        "\nheaders           -> {}" +
+                        "\nrequestBody       -> {}" +
+                        "\nresponse          -> {}",
                 request.get(PATH),
                 (System.currentTimeMillis() - Long.parseLong(request.get(TIME))) + "ms",
                 request.get(METHOD),
@@ -133,56 +128,6 @@ public class MyFeignLogger extends Logger {
     protected void log(String configKey, String format, Object... args) {
         if (log.isInfoEnabled()) {
             log.info(String.format(methodTag(configKey) + format, args));
-        }
-    }
-
-
-
-    /**
-     * 输入流转byte[]
-     *
-     * @param inStream 文件流内容
-     * @return
-     */
-    public static byte[] streamToByteArray(InputStream inStream) {
-        if (inStream == null) {
-            return null;
-        }
-        byte[] in2b = null;
-        BufferedInputStream in = new BufferedInputStream(inStream);
-        ByteArrayOutputStream swapStream = new ByteArrayOutputStream();
-        int rc = 0;
-        try {
-            while ((rc = in.read()) != -1) {
-                swapStream.write(rc);
-            }
-            in2b = swapStream.toByteArray();
-        } catch (IOException e) {
-            log.warn("streamToByteArray exception inStream:[{}]", inStream, e);
-        } finally {
-            closeIo(inStream, in, swapStream);
-        }
-        return in2b;
-    }
-
-
-    /**
-     * 关闭流
-     */
-    public static void closeIo(Closeable... closeable) {
-        if (null == closeable || closeable.length <= 0) {
-            return;
-        }
-        for (Closeable cb : closeable) {
-            try {
-                if (null == cb) {
-                    continue;
-                }
-                cb.close();
-            } catch (IOException e) {
-                throw new RuntimeException(
-                        FileUtil.class.getName(), e);
-            }
         }
     }
 
