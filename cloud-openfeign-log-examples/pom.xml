@@ -1,0 +1,40 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>cloud-openfeign-log-examples</artifactId>
+    <packaging>pom</packaging>
+
+    <name>${project.artifactId}</name>
+    <description>Project for cloud-openfeign-log-examples</description>
+
+    <parent>
+        <groupId>io.github.zhoushuai1119</groupId>
+        <artifactId>cloud-openfeign-log</artifactId>
+        <version>${openfeign-log.version}</version>
+    </parent>
+
+    <modules>
+        <module>openfeign-log-example-consumer</module>
+        <module>openfeign-log-example-producer</module>
+    </modules>
+
+    <dependencies>
+        <!-- nacos注册中心 -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.github.zhoushuai1119</groupId>
+            <artifactId>cloud-openfeign-log-spring-boot-starter</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.zhoushuai1119</groupId>
+            <artifactId>platform-common</artifactId>
+            <version>${platform-parent.version}</version>
+        </dependency>
+    </dependencies>
+
+</project>

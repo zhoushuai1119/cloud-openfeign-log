@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>cloud-openfeign-log</artifactId>
+    <version>${openfeign-log.version}</version>
+    <packaging>pom</packaging>
+
+    <name>${project.artifactId}</name>
+    <description>Project for Cloud Openfeign Log</description>
+
+    <parent>
+        <groupId>io.github.zhoushuai1119</groupId>
+        <artifactId>platform-parent</artifactId>
+        <version>2.1.0</version>
+    </parent>
+
+    <modules>
+        <module>cloud-openfeign-log-examples</module>
+        <module>cloud-openfeign-log-spring-boot-starter</module>
+    </modules>
+
+    <!-- 公共属性 -->
+    <properties>
+        <openfeign-log.version>1.6.0</openfeign-log.version>
+    </properties>
+
+    <licenses>
+        <license>
+            <name>GNU General Public License version 3</name>
+            <url>https://opensource.org/licenses/GPL-3.0</url>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>https://github.com/zhoushuai1119/cloud-rocketmq-spring-boot-starter.git</url>
+        <connection>scm:git:https://github.com/zhoushuai1119/cloud-rocketmq-spring-boot-starter.git</connection>
+        <developerConnection>scm:git@github.com:zhoushuai1119/cloud-rocketmq-spring-boot-starter.git
+        </developerConnection>
+        <tag>master</tag>
+    </scm>
+
+    <developers>
+        <developer>
+            <id>zhoushuai</id>
+            <name>zhoushuai</name>
+            <email>zs11195310@163.com</email>
+        </developer>
+    </developers>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+</project>

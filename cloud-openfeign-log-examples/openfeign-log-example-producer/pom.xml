@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>openfeign-log-example-producer</artifactId>
+    <packaging>jar</packaging>
+
+    <name>${project.artifactId}</name>
+    <description>project for openfeign-log-example-producer</description>
+
+    <!--父工程的依赖-->
+    <parent>
+        <groupId>io.github.zhoushuai1119</groupId>
+        <artifactId>cloud-openfeign-log-examples</artifactId>
+        <version>${openfeign-log.version}</version>
+    </parent>
+
+    <build>
+        <finalName>openfeign-log-example-producer</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>

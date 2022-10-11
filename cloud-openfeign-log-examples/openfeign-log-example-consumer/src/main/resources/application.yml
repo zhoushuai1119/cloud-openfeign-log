@@ -1,0 +1,36 @@
+server:
+  port: 8764
+
+spring:
+  application:
+    name: openfeign-log-example-consumer
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 139.196.208.53:8848
+        username: nacos
+        password: nacos
+
+
+#hystrix的超时时间
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: true
+        isolation:
+          thread:
+            timeoutInMilliseconds: 5000
+
+feign:
+  hystrix:
+    enabled: true
+  client:
+    config:
+      default: #设置全局超时时间
+        connectTimeout: 2000  #请求连接的超时时间
+        readTimeout: 5000     #请求处理的超时时间
+
+
