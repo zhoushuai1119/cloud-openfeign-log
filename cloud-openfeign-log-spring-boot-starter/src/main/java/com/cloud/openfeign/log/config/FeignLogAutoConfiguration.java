@@ -4,6 +4,7 @@ import com.cloud.openfeign.log.MyFeignLogger;
 import feign.Logger;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 /**
  * @description:
@@ -15,6 +16,7 @@ import org.springframework.context.annotation.Configuration;
 public class FeignLogAutoConfiguration {
 
     @Bean
+    @Primary
     public Logger.Level feignLogLevel() {
         return Logger.Level.FULL;
     }
