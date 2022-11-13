@@ -16,12 +16,12 @@
     </parent>
 
     <dependencies>
-        <!--feign调用-->
+        <!--openFeign-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
-        <!--Feign中使用HttpClient替换JDK自带的HttpURLConnnection网络请求-->
+        <!--openFeign中使用HttpClient替换JDK自带的HttpURLConnnection网络请求-->
         <dependency>
             <groupId>io.github.openfeign</groupId>
             <artifactId>feign-httpclient</artifactId>
@@ -30,11 +30,6 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
         </dependency>
         <!--集成工具包-->
         <dependency>
